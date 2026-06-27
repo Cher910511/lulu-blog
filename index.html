@@ -554,16 +554,68 @@ img { border: 0; }
   position: relative; padding: 12px 14px 10px 48px;
   font-family: "SimSun","宋体","Times New Roman",serif;
   font-size: 13px; color: #2A0A0A; line-height: 1.9;
+  flex: 1; min-width: 0;
 }
 .letter-wrap::before {
   content:''; position:absolute; left:40px; top:0; bottom:0; width:1px; background:#FFB3B3;
 }
-.l-dear { font-weight:bold; color:#C71585; font-size:13px; }
-.l-sign { text-align:right; font-style:italic; color:#800055; margin-top:6px; }
+.letter-img {
+  float: right;
+  width: 140px;
+  margin: 0 0 8px 12px;
+  border: 3px solid #fff;
+  box-shadow: 2px 2px 6px rgba(150,40,60,0.15);
+  border-radius: 3px;
+}
+.l-dear { font-weight:bold; color:#DD4477; font-size:14px; }
+.l-sign { text-align:right; font-style:italic; color:#BB4466; margin-top:8px; font-size:12px; }
+
+/* letter body: text + photo side by side */
+.letter-body-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.letter-photo {
+  flex-shrink: 0;
+  width: 130px;
+  text-align: center;
+}
+.letter-photo img {
+  width: 100%;
+  border: 3px solid #fff;
+  box-shadow: 2px 2px 8px rgba(150,40,60,0.2);
+  border-radius: 4px;
+  display: block;
+}
+.letter-photo-tag {
+  display: block;
+  font-size: 9px;
+  color: #CC7799;
+  font-family: "Courier New",monospace;
+  margin-top: 3px;
+}
 .cake-ascii {
   font-family:"Courier New",monospace; font-size:11px; text-align:center;
   background:#fff; border:1px dashed #FFC2D6; color:#CC0055;
   padding:6px 4px; margin-bottom:8px; line-height:1.5;
+}
+.cake-wrap {
+  position: relative; display: inline-block; padding: 10px 16px;
+}
+.cake-word {
+  position: absolute;
+  font-family: "SimHei","Microsoft YaHei",sans-serif;
+  font-size: 14px; font-weight: bold; color: #DD4477;
+  text-shadow: 1px 1px 2px rgba(200,60,100,0.3);
+  animation: cakeBreath 2s ease-in-out infinite;
+}
+.cake-top    { top: 0; left: 2px; }
+.cake-right  { top: 0; right: 2px; animation-delay: 0.5s; }
+.cake-bottom { bottom: 0; left: 2px; animation-delay: 1.5s; }
+.cake-left   { bottom: 0; right: 2px; animation-delay: 1s; }
+@keyframes cakeBreath {
+  0%,100% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 1px 1px 4px rgba(220,80,120,0.5); }
 }
 
 /* =========================================
@@ -619,6 +671,7 @@ img { border: 0; }
   #hd::before { font-size: 8px; }
   .xp-win { width: 96vw; }
   .letter-wrap { padding-left: 36px; font-size: 12px; }
+  .letter-img { width: 100px; }
   #dlg-letter { width: 96vw; }
   .lcd { font-size: 18px; }
   .goto-link { font-size: 12px; padding: 8px 18px; letter-spacing: 1px; }
@@ -635,7 +688,7 @@ img { border: 0; }
     <span id="bday-tag">[生日快乐]</span>
     <div id="hd-title">✿ Lulu 的小小星球 ✿</div>
     <div id="hd-sub">~~ 欢迎来到 Lulu 的小天地，请多多关照 ~~</div>
-    <div id="hd-update">Last Updated: 2009-03-02 &nbsp;|&nbsp; Visitors: <span id="hd-cnt">124</span></div>
+    <div id="hd-update">Last Updated: 2009-06-28 &nbsp;|&nbsp; Visitors: <span id="hd-cnt">128</span></div>
   </div>
 
   <!-- ===== NAV ===== -->
@@ -668,7 +721,7 @@ img { border: 0; }
           今天好像有什么事情要发生 (^-^)
         </div>
         <div class="post-meta">
-          发布: 2009-03-02 14:23 &nbsp;|&nbsp; 心情: 期待 &nbsp;|&nbsp; 天气: 晴有微风 &nbsp;|&nbsp; 浏览: 88
+          发布: 2009-06-28 14:23 &nbsp;|&nbsp; 心情: 开心 &nbsp;|&nbsp; 天气: 晴天 &nbsp;|&nbsp; 浏览: 128
         </div>
         <div class="post-body">
           <p>今天一早起来，窗外阳光很好，心里莫名觉得今天会是个特别的日子。</p>
@@ -746,8 +799,8 @@ img { border: 0; }
       <div class="sb-box">
         <div class="sb-hd">✿ 访客计数器</div>
         <div class="sb-body">
-          <div class="lcd" id="counter">000124</div>
-          <p style="text-align:center;font-size:10px;color:#BB6688;margin-top:3px;">欢迎第 124 位访客！</p>
+          <div class="lcd" id="counter">000128</div>
+          <p style="text-align:center;font-size:10px;color:#BB6688;margin-top:3px;">欢迎第 128 位访客！</p>
         </div>
       </div>
 
@@ -765,9 +818,9 @@ img { border: 0; }
       <div class="sb-box">
         <div class="sb-hd">✿ 日记归档</div>
         <div class="sb-body">
-          <span class="sb-lnk">2009年3月 (1)</span>
-          <span class="sb-lnk">2009年2月 (4)</span>
-          <span class="sb-lnk">2009年1月 (3)</span>
+          <span class="sb-lnk">2009年6月 (2)</span>
+          <span class="sb-lnk">2009年5月 (3)</span>
+          <span class="sb-lnk">2009年4月 (4)</span>
           <span class="sb-lnk">2008年12月 (6)</span>
           <span class="sb-lnk">2008年11月 (5)</span>
         </div>
@@ -811,7 +864,7 @@ img { border: 0; }
   </div>
   <div class="xp-body" id="candle-xpbody">
     <div class="qq-from">
-      发送人：<strong>Cher</strong> &nbsp;&nbsp; 2009-03-02 &nbsp; 14:30:01
+      发送人：<strong>Cher</strong> &nbsp;&nbsp; 2009-06-28 &nbsp; 14:30:01
       <span class="hot">[NEW!]</span>
     </div>
     <div class="xp-msg">
@@ -848,11 +901,16 @@ img { border: 0; }
   </div>
   <div class="xp-body">
     <div class="qq-from">
-      发送人：<strong>Cher</strong> &nbsp;&nbsp; 2009-03-02 &nbsp; 14:30:08
+      发送人：<strong>Cher</strong> &nbsp;&nbsp; 2009-06-28 &nbsp; 14:30:08
       <span class="hot">[BEST]</span>
     </div>
     <div class="xp-msg" style="padding:0;background:transparent;border:none;">
       <div class="cake-ascii">
+        <div class="cake-wrap">
+          <span class="cake-word cake-top">生</span>
+          <span class="cake-word cake-right">日</span>
+          <span class="cake-word cake-bottom">快</span>
+          <span class="cake-word cake-left">乐</span>
 <pre style="font-family:'Courier New',monospace;font-size:11px;color:#CC0055;line-height:1.4;display:inline-block;text-align:left">
   *  *  *  *  *  *  *  *  *
   | i |  | i |  | i |  | i |
@@ -865,8 +923,11 @@ img { border: 0; }
 |   +-+-+-+-+-+-+-+-+-+-+-+   |
  \___________________________/
   *  *  *  *  *  *  *  *  *</pre>
+        </div>
       </div>
+
       <div class="letter-wrap">
+        <img class="letter-img" src="lulu-cake.jpg" alt="蛋糕">
         <p class="l-dear">Lulu：</p>
         <br>
         <p>很愉快地通知你：你在成长。</p>
@@ -874,9 +935,14 @@ img { border: 0; }
         <p>未来逐渐光明，迷茫在减少，</p>
         <p>智慧在增加。</p>
         <br>
-        <p>生日快乐，请对自己说：</p>
+        <p>我希望你收到的，永远是比悲伤更多的好消息。</p>
         <br>
-        <p style="color:#990055;font-style:italic;padding-left:8px;border-left:2px solid #FFC2D6">
+        <p>比起习惯难过的日子，<br>幸福能成为生活中最平常不过的事。</p>
+        <br>
+        <p>生日快乐。<br>希望这一年，能有更多让你期待明天的理由。</p>
+        <p>请对自己说：</p>
+        <br>
+        <p style="color:#990055;font-style:italic;padding-left:8px;border-left:2px solid #FFB3CC">
           "不要畏惧成长，<br>
           &nbsp;请你一直做自己吧。"
         </p>
