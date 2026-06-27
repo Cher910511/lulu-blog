@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>✿ Lulu 的小小星球 ✿</title>
+<style>
+/* =========================================
+   RESET + BASE
+   ========================================= */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体",Arial,sans-serif;
+  font-size: 12px;
+  background-color: #FFC0D4;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,130,170,0.06) 2px, rgba(255,130,170,0.06) 4px),
+    radial-gradient(ellipse at 20% 20%, rgba(255,180,200,0.5) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 60%, rgba(255,160,190,0.4) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 90%, rgba(255,190,210,0.3) 0%, transparent 50%);
+  color: #330011;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+a { color: #DD4477; text-decoration: none; }
+a:visited { color: #CC5577; }
+a:hover { color: #FF5588; text-decoration: underline; }
+img { border: 0; }
+
+/* =========================================
+   OUTER WRAPPER — 双线边框 + 轻阴影
+   ========================================= */
+#page {
+  width: 100%;
+  max-width: 800px;
+  margin: 12px auto 24px;
+  background: #FFF2F6;
+  border: 2px double #FF7DAD;
+  box-shadow: 2px 2px 12px rgba(200,80,100,0.15), 0 0 0 1px #FFD4E2;
+  min-height: 100vh;
+  animation: fadein 0.8s ease;
+  position: relative;
+}
+#page::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed #FFC2D6;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes fadein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   HEADER — 柔和渐变 + 双线底边
+   ========================================= */
+#hd {
+  background: linear-gradient(180deg, #FFA8C5 0%, #FF8FB8 40%, #FF6B9C 100%);
+  padding: 18px 10px 12px;
+  text-align: center;
+  border-bottom: 3px double #D94B85;
+  position: relative;
+  overflow: hidden;
+}
+#hd::before {
+  content: "✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿";
+  display: block;
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#hd::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,0.2) 0%, transparent 40%),
+    radial-gradient(circle at 85% 50%, rgba(255,255,255,0.15) 0%, transparent 35%),
+    radial-gradient(circle at 50% 10%, rgba(255,255,255,0.25) 0%, transparent 30%);
+  pointer-events: none;
+}
+#hd-title {
+  font-family: "Microsoft YaHei","微软雅黑","SimHei","黑体",sans-serif;
+  font-size: 27px;
+  font-weight: bold;
+  color: #992244;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.6), 2px 2px 4px rgba(200,60,100,0.3);
+  letter-spacing: 4px;
+  animation: hdBreath 4s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+@keyframes hdBreath {
+  0%,100% { text-shadow: 1px 1px 0 rgba(255,255,255,0.6), 2px 2px 4px rgba(200,60,100,0.3); }
+  50%     { text-shadow: 1px 1px 3px rgba(255,255,255,0.8), 2px 2px 8px rgba(220,100,140,0.5); }
+}
+#hd-sub {
+  font-size: 11px;
+  color: #BB4466;
+  margin-top: 5px;
+  font-style: italic;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+#hd-update {
+  font-size: 10px;
+  color: #CC7799;
+  margin-top: 6px;
+  font-family: "Courier New","SimSun",monospace;
+  position: relative;
+  z-index: 1;
+}
+
+/* bday blink label */
+#bday-tag {
+  display: none;
+  position: absolute;
+  top: 10px; right: 10px;
+  background: #fff9dc;
+  color: #FF3366;
+  font-family: "Microsoft YaHei",sans-serif;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1px dashed #FF8DA8;
+  border-radius: 10px;
+  z-index: 2;
+}
+#bday-tag.on { display: inline-block; animation: tagBreath 1.5s ease-in-out infinite; }
+@keyframes tagBreath { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+/* =========================================
+   NAV BAR — 柔和渐变 + 虚线分隔
+   ========================================= */
+#nav {
+  background: linear-gradient(180deg, #FF9BB8 0%, #FF7DAD 100%);
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px dashed #E06088;
+}
+#nav a,
+#nav .nav-item {
+  flex: 1;
+  min-width: 60px;
+  text-align: center;
+  color: #992244;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 7px 2px;
+  border-right: 1px dotted #FF8DA8;
+  letter-spacing: 1px;
+  display: inline-block;
+  transition: background 0.2s, color 0.2s;
+  cursor: default;
+}
+#nav a { cursor: pointer; }
+#nav a:hover { background: rgba(255,255,255,0.3); color: #CC3355; text-decoration: none; }
+#nav a:last-child,
+#nav .nav-item:last-child { border-right: none; }
+
+/* =========================================
+   MARQUEE NOTICE — 温暖底色
+   ========================================= */
+#notice {
+  background: #FFFAE8;
+  border-top: 1px solid #FFE044;
+  border-bottom: 1px solid #FFE044;
+  color: #996622;
+  font-size: 11px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.marquee-inner {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+@keyframes marquee {
+  0%   { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+
+/* =========================================
+   TWO-COLUMN LAYOUT
+   ========================================= */
+#body-wrap {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================
+   MAIN COLUMN
+   ========================================= */
+#main {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border-right: 2px dotted #FFC2D6;
+}
+
+/* section header — 柔和粉条 + 齿边装饰 */
+.sec-hd {
+  background: linear-gradient(90deg, #FF9BB8 0%, #FFCCE0 100%);
+  color: #992244;
+  font-family: "Microsoft YaHei","SimHei",sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 5px 12px;
+  border-left: 4px solid #E06088;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  position: relative;
+}
+.sec-hd::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, transparent, transparent 3px, #E06088 3px, #E06088 6px);
+}
+
+/* post 卡片 */
+.post {
+  background: #FFFAFB;
+  border: 1px solid #FFBBD0;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  box-shadow: 1px 1px 4px rgba(200,80,110,0.08);
+  animation: postIn 0.5s ease backwards;
+}
+.post:nth-child(2) { animation-delay: 0.1s; }
+.post:nth-child(4) { animation-delay: 0.2s; }
+@keyframes postIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.post-hd {
+  background: #FFF2F6;
+  border-bottom: 1px dashed #FFC2D6;
+  padding: 6px 12px;
+  font-weight: bold;
+  color: #BB4466;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 6px 6px 0 0;
+}
+.new-tag {
+  background: #FF557A;
+  color: #fff;
+  font-size: 9px;
+  font-weight: bold;
+  padding: 1px 5px;
+  font-family: "Tahoma",sans-serif;
+  border-radius: 3px;
+  animation: newBlink 2s step-start infinite;
+}
+@keyframes newBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.post-meta {
+  padding: 4px 12px;
+  font-size: 10px;
+  color: #CC7799;
+  font-family: "Courier New",monospace;
+  border-bottom: 1px dotted #FFD4E2;
+  background: #FFFAFB;
+}
+
+.post-body {
+  padding: 10px 14px;
+  color: #330011;
+  font-size: 13px;
+  line-height: 1.9;
+}
+.post-body p { margin-bottom: 8px; }
+
+.post-footer {
+  padding: 5px 12px 8px;
+  border-top: 1px dotted #FFD4E2;
+  background: #FFFAFB;
+  border-radius: 0 0 6px 6px;
+}
+.tag {
+  display: inline-block;
+  background: #FFE0EE;
+  color: #DD3355;
+  border: 1px solid #FFBBD0;
+  font-size: 10px;
+  padding: 1px 7px;
+  margin-right: 4px;
+  border-radius: 8px;
+}
+
+/* 分割线 */
+.div-line {
+  text-align: center;
+  color: #FF8DA8;
+  font-size: 11px;
+  letter-spacing: 5px;
+  margin: 10px 0;
+}
+
+.goto-link {
+  display: inline-block;
+  background: #FF9BB8;
+  background: linear-gradient(180deg, #FFCCE0 0%, #d4a0b0 100%);
+  color: #992244 !important;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 16px;
+  border: 1px solid #E06088;
+  border-radius: 4px;
+  margin-top: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.goto-link:hover {
+  background: linear-gradient(180deg, #f0d4de 0%, #dcb0bc 100%);
+  transform: translateY(-1px);
+  box-shadow: 1px 2px 4px rgba(200,80,110,0.2);
+  text-decoration: none;
+}
+
+/* =========================================
+   SIDEBAR
+   ========================================= */
+#sidebar {
+  width: 190px;
+  flex-shrink: 0;
+  padding: 12px 10px;
+}
+
+.sb-box {
+  background: #FFFAFB;
+  border: 1px solid #FFBBD0;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  box-shadow: 1px 1px 3px rgba(200,80,110,0.06);
+  animation: sbIn 0.5s ease backwards;
+}
+.sb-box:nth-child(1) { animation-delay: 0.15s; }
+.sb-box:nth-child(2) { animation-delay: 0.25s; }
+.sb-box:nth-child(3) { animation-delay: 0.35s; }
+.sb-box:nth-child(4) { animation-delay: 0.45s; }
+.sb-box:nth-child(5) { animation-delay: 0.55s; }
+@keyframes sbIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+
+.sb-hd {
+  background: linear-gradient(90deg, #FF9BB8, #FFCCE0);
+  color: #992244;
+  font-weight: bold;
+  font-size: 11px;
+  padding: 4px 10px;
+  letter-spacing: 1px;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px dashed #FF8DA8;
+}
+
+.sb-body {
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #661133;
+  line-height: 1.8;
+}
+.sb-body a,
+.sb-body .sb-lnk {
+  display: block;
+  color: #DD3355;
+  font-size: 11px;
+  padding: 2px 0;
+  border-bottom: 1px dotted #FFD4E2;
+  text-decoration: none;
+  cursor: default;
+  transition: padding 0.2s;
+}
+.sb-body a { cursor: pointer; }
+.sb-body a:hover { color: #FF5588; padding-left: 5px; text-decoration: none; }
+.sb-body a:last-child,
+.sb-body .sb-lnk:last-child { border-bottom: none; }
+
+/* LED counter */
+.lcd {
+  background: #2a1a20;
+  color: #ff7766;
+  font-family: "Courier New",monospace;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  text-align: center;
+  padding: 6px 10px;
+  border: 2px inset #5a4a50;
+  margin: 5px 0;
+  border-radius: 3px;
+  text-shadow: 0 0 6px rgba(255,120,100,0.5);
+}
+
+.mood-bar {
+  background: linear-gradient(90deg, #FF8DA8 0%, #FFCCE0 100%);
+  height: 9px;
+  border: 1px solid #E06088;
+  margin: 5px 0;
+  border-radius: 3px;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+#ft {
+  background: linear-gradient(180deg, #FF8DA8, #E06088);
+  color: rgba(100,20,30,0.8);
+  text-align: center;
+  font-size: 10px;
+  padding: 10px;
+  border-top: 2px double #FF9BB8;
+  line-height: 2.2;
+  font-family: "Tahoma","Courier New","SimSun",sans-serif;
+}
+
+/* =========================================
+   OVERLAY + XP WINDOWS (保持原有)
+   ========================================= */
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(60,20,30,0.5);
+  z-index: 500;
+}
+#overlay.on { display: block; }
+.xp-win {
+  display: none;
+  position: fixed;
+  z-index: 600;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: min(420px, 92vw);
+  box-shadow: 4px 4px 14px rgba(150,40,60,0.4), 0 0 0 3px rgba(255,180,200,0.25);
+  border: 2px solid #CC5577;
+  border-radius: 8px;
+  font-family: "Tahoma","Microsoft YaHei",sans-serif;
+  overflow: hidden;
+}
+.xp-win.on { display: block; animation: popIn 0.3s ease; }
+@keyframes popIn { from { opacity: 0; transform: translate(-50%,-50%) scale(0.9); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+
+/* XP title bar — pink theme */
+.xp-bar {
+  background: linear-gradient(180deg, #FF9BB8 0%, #FF77A0 30%, #EE5588 70%, #DD4477 100%);
+  padding: 6px 10px 6px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 2px solid #CC5577;
+  height: 30px;
+}
+.xp-bar-title {
+  color: #fff; font-size: 12px; font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(150,30,60,0.5);
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap; overflow: hidden;
+}
+.xp-bar-icon {
+  width: 18px; height: 18px;
+  background: #FFE0EC; border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 3px;
+  font-size: 10px; font-weight: bold; color: #DD4477;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-family: "Tahoma",sans-serif;
+}
+.xp-btns { display: flex; gap: 2px; flex-shrink: 0; }
+.xp-ctrl {
+  width: 22px; height: 20px; border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.4);
+  font-size: 11px; font-weight: bold; line-height: 1; cursor: default;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Tahoma",sans-serif; color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.xp-ctrl.dis {
+  background: rgba(255,255,255,0.2); opacity: 0.5; cursor: not-allowed;
+}
+.xp-ctrl.cls {
+  background: #F09090;
+}
+.xp-ctrl.cls:hover { background: #F5A0A0; }
+.xp-ctrl.cls:active { background: #D07070; }
+
+/* XP body */
+.xp-body {
+  background: #FFF8FA; padding: 12px 14px;
+}
+.qq-from {
+  background: #fff; border: 1px solid #FFD4E2; border-radius: 5px;
+  padding: 5px 10px; margin-bottom: 10px;
+  font-size: 11px; color: #330011; font-family: "Tahoma",sans-serif;
+}
+.qq-from strong { color: #DD4477; }
+.qq-from .hot { color: #EE4455; font-size: 9px; font-weight: bold; border: 1px solid #EE4455; padding: 0 4px; margin-left: 6px; border-radius: 2px; font-family: "Tahoma",sans-serif; }
+.xp-msg {
+  background: #fff; border: 1px solid #FFD4E2;
+  border-radius: 6px;
+  padding: 12px 14px; margin-bottom: 12px;
+  font-size: 13px; color: #330011; line-height: 1.9;
+  min-height: 70px; font-family: "Tahoma","Microsoft YaHei",sans-serif;
+}
+.xp-foot { text-align: center; padding: 2px 0 0; display: flex; gap: 8px; justify-content: center; }
+.xp-btn {
+  background: linear-gradient(180deg, #FFBBD0 0%, #FF8DA8 100%);
+  border: 2px solid #DD5577; border-radius: 5px;
+  font-family: "Tahoma","Microsoft YaHei",sans-serif;
+  font-size: 12px; color: #fff; font-weight: bold;
+  padding: 6px 20px; cursor: pointer; min-width: 80px;
+  text-shadow: 1px 1px 1px rgba(150,30,50,0.4);
+  transition: all 0.15s;
+}
+.xp-btn:hover { background: linear-gradient(180deg, #FFCCDE 0%, #FF9BB8 100%); transform: translateY(-1px); }
+.xp-btn:active { transform: translateY(0); }
+.xp-btn:focus { outline: 2px dotted #DD5577; outline-offset: 2px; }
+
+/* =========================================
+   CANDLE ASCII
+   ========================================= */
+.candle-area {
+  font-family:"Courier New",monospace; font-size:12px; color:#333;
+  text-align:center; line-height:1.45; margin:4px 0 6px;
+  background:#FFFBF0; border:1px solid #FFDDA0; padding:8px 0;
+}
+.c-flame { color:#FF8800; display:block; }
+.c-wick  { color:#333;    display:block; }
+.c-wax   { color:#EEAAAA; display:block; }
+.c-plate { color:#888;    display:block; }
+.c-smoke { color:#AAA;    display:block; opacity:0; transition:opacity 0.6s; height:14px; }
+.c-msg   { display:none; color:#CC3355; font-family:"Tahoma",sans-serif; font-size:11px; margin-top:4px; }
+.candle-area.blown .c-flame { display:none; }
+.candle-area.blown .c-smoke { opacity:1; }
+.candle-area.blown .c-msg   { display:block; }
+@keyframes flashbody { 0%,100%{background:#ECE9D8} 30%{background:#fffde7} 60%{background:#fff9c4} }
+.xp-body.flash { animation:flashbody 0.5s ease; }
+
+/* =========================================
+   LETTER DIALOG
+   ========================================= */
+#dlg-letter { width: min(480px, 96vw); }
+.letter-wrap {
+  background: #FFF8F0; border: 1px solid #D4AAAA;
+  background-image: repeating-linear-gradient(transparent, transparent 23px, #EED8D8 23px, #EED8D8 24px);
+  position: relative; padding: 12px 14px 10px 48px;
+  font-family: "SimSun","宋体","Times New Roman",serif;
+  font-size: 13px; color: #2A0A0A; line-height: 1.9;
+}
+.letter-wrap::before {
+  content:''; position:absolute; left:40px; top:0; bottom:0; width:1px; background:#FFB3B3;
+}
+.l-dear { font-weight:bold; color:#C71585; font-size:13px; }
+.l-sign { text-align:right; font-style:italic; color:#800055; margin-top:6px; }
+.cake-ascii {
+  font-family:"Courier New",monospace; font-size:11px; text-align:center;
+  background:#fff; border:1px dashed #FFC2D6; color:#CC0055;
+  padding:6px 4px; margin-bottom:8px; line-height:1.5;
+}
+
+/* =========================================
+   FALLING PETALS + STARS — 全屏飘落
+   ========================================= */
+.petal {
+  position: fixed; top: -40px; pointer-events: none; z-index: 9999;
+  animation: pfell linear forwards; user-select: none; font-style: normal;
+}
+@keyframes pfell {
+  0%   { top:-40px; opacity:1; transform:translateX(0) rotate(0deg); }
+  50%  { opacity:1; transform:translateX(35px) rotate(200deg); }
+  100% { top:110vh; opacity:0; transform:translateX(-20px) rotate(400deg); }
+}
+.star-twinkle {
+  position: fixed; pointer-events: none; z-index: 9998;
+  animation: twinkle 1.8s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0.3; transform: scale(0.9); }
+  40%     { opacity: 1; transform: scale(1.2); }
+  70%     { opacity: 0.5; transform: scale(1); }
+}
+
+/* =========================================
+   COUNTER JUMP
+   ========================================= */
+@keyframes cjump { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35);color:#FFE044} }
+.lcd.jump { animation: cjump 0.45s ease; }
+
+/* =========================================
+   CORNER DECO — 固定角落装饰
+   ========================================= */
+.corner-deco {
+  position: fixed; pointer-events: none; z-index: 9997;
+  font-size: 20px; opacity: 0.4;
+  animation: cDeco 3s ease-in-out infinite;
+}
+@keyframes cDeco { 0%,100%{opacity:0.35;transform:rotate(0deg)} 50%{opacity:0.6;transform:rotate(8deg)} }
+
+
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+@media (max-width: 640px) {
+  #page { margin: 4px; max-width: 100%; }
+  #body-wrap { flex-direction: column; }
+  #sidebar { width: 100%; border-top: 2px dotted #FFC2D6; }
+  #main { padding: 8px; border-right: none; }
+  #hd-title { font-size: 20px; }
+  #hd::before { font-size: 8px; }
+  .xp-win { width: 96vw; }
+  .letter-wrap { padding-left: 36px; font-size: 12px; }
+  #dlg-letter { width: 96vw; }
+  .lcd { font-size: 18px; }
+  .goto-link { font-size: 12px; padding: 8px 18px; letter-spacing: 1px; }
+  #nav a, #nav .nav-item { font-size: 10px; padding: 5px 1px; }
+  .corner-deco { display: none; }
+}
+</style>
+</head>
+<body>
+<div id="page">
+
+  <!-- ===== HEADER ===== -->
+  <div id="hd">
+    <span id="bday-tag">[生日快乐]</span>
+    <div id="hd-title">✿ Lulu 的小小星球 ✿</div>
+    <div id="hd-sub">~~ 欢迎来到 Lulu 的小天地，请多多关照 ~~</div>
+    <div id="hd-update">Last Updated: 2009-03-02 &nbsp;|&nbsp; Visitors: <span id="hd-cnt">124</span></div>
+  </div>
+
+  <!-- ===== NAV ===== -->
+  <div id="nav">
+    <span class="nav-item">首&nbsp;页</span>
+    <span class="nav-item">日&nbsp;记</span>
+    <span class="nav-item">相&nbsp;册</span>
+    <span class="nav-item" id="nav-gb" onclick="triggerCandle()">留言板</span>
+    <span class="nav-item">关于我</span>
+  </div>
+
+  <!-- ===== NOTICE SCROLL ===== -->
+  <div id="notice">
+    <span class="marquee-inner">
+      [公告] 欢迎来到 Lulu 的小站！&nbsp;&nbsp; ✿ 本站已开通留言板，欢迎留言 ✿ &nbsp;&nbsp; 友链申请请在留言板留言 &nbsp;&nbsp; Best viewed in 1024x768 &nbsp;&nbsp; [公告] 今天是个特别的日子哦 (^_^) &nbsp;&nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <!-- ===== BODY ===== -->
+  <div id="body-wrap">
+
+    <!-- MAIN -->
+    <div id="main">
+
+      <div class="sec-hd">✿ 最新日记</div>
+
+      <div class="post">
+        <div class="post-hd">
+          <span class="new-tag">NEW</span>
+          今天好像有什么事情要发生 (^-^)
+        </div>
+        <div class="post-meta">
+          发布: 2009-03-02 14:23 &nbsp;|&nbsp; 心情: 期待 &nbsp;|&nbsp; 天气: 晴有微风 &nbsp;|&nbsp; 浏览: 88
+        </div>
+        <div class="post-body">
+          <p>今天一早起来，窗外阳光很好，心里莫名觉得今天会是个特别的日子。</p>
+          <p>早餐吃了妈妈做的蛋炒饭，一边听歌一边发呆，突然想起来——</p>
+          <p>今天，是我的生日。(^_^)</p>
+          <p>每年到这个时候心里都有点复杂的感觉。又大了一岁，好像也没什么，又好像什么都不一样了。</p>
+          <p>不知道有没有朋友记得？悄悄地，在留言板给我留一条也好哟——</p>
+          <div class="div-line">- - - - - - - - - - - - - - - - - - -</div>
+          <p style="text-align:center">
+            <span id="lnk-gb" class="goto-link" onclick="triggerCandle()">&#9993; 查看我的博客新消息 &#9993;</span>
+          </p>
+        </div>
+        <div class="post-footer">
+          <span class="tag">碎碎念</span>
+          <span class="tag">生日</span>
+          <span class="tag">心情</span>
+        </div>
+      </div>
+
+      <div class="div-line">✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿ ❀ ✿</div>
+
+      <div class="post">
+        <div class="post-hd">最近在循环的几首歌 (^o^)</div>
+        <div class="post-meta">发布: 2009-02-14 21:05 &nbsp;|&nbsp; 心情: 开心</div>
+        <div class="post-body">
+          <p>最近循环了好多遍，分享给大家~</p>
+          <p>01. 《天使》—— 五月天<br>
+             02. 《小情歌》—— 苏打绿<br>
+             03. 《第一天》—— 孙燕姿<br>
+             04. 《那些年》—— 胡夏<br>
+             05. 《左手右手》—— 棒棒堂</p>
+          <p>喜欢的可以去找来听 (^-^)</p>
+        </div>
+        <div class="post-footer">
+          <span class="tag">音乐</span>
+          <span class="tag">推荐</span>
+        </div>
+      </div>
+
+      <div class="div-line">- - - - - - - - - - - - - - - - - - -</div>
+
+      <div class="post">
+        <div class="post-hd">我的 2009 年愿望清单</div>
+        <div class="post-meta">发布: 2009-01-01 00:05 &nbsp;|&nbsp; 心情: 期待</div>
+        <div class="post-body">
+          <p>新年立下的 flag，公开发布，监督我！</p>
+          <p>[ ] 读完 10 本书<br>
+             [ ] 学会一首完整的吉他曲<br>
+             [ ] 认真做好每一天<br>
+             [ ] 对自己好一点<br>
+             [ ] 找到让自己开心的事 (^_^)</p>
+        </div>
+        <div class="post-footer"><span class="tag">新年</span><span class="tag">愿望</span></div>
+      </div>
+
+    </div><!-- /main -->
+
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+
+      <div class="sb-box">
+        <div class="sb-hd">✿ 关于 Lulu</div>
+        <div class="sb-body">
+          一个喜欢发呆和听歌的女生。<br>
+          热爱一切粉色的事物。<br>
+          相信世界上有魔法。(^_^)<br><br>
+          <strong>座右铭：</strong><br>
+          "做自己就好了。"<br><br>
+          <strong>今日心情：</strong><br>
+          <span style="color:#FF3366">期待 (^-^)</span>
+          <div class="mood-bar" style="width:75%"></div>
+        </div>
+      </div>
+
+      <div class="sb-box">
+        <div class="sb-hd">✿ 访客计数器</div>
+        <div class="sb-body">
+          <div class="lcd" id="counter">000124</div>
+          <p style="text-align:center;font-size:10px;color:#BB6688;margin-top:3px;">欢迎第 124 位访客！</p>
+        </div>
+      </div>
+
+      <div class="sb-box">
+        <div class="sb-hd">✿ 友情链接</div>
+        <div class="sb-body">
+          <span class="sb-lnk">Cher 的小窝</span>
+          <span class="sb-lnk">小兔子的博客</span>
+          <span class="sb-lnk">阿木的个人站</span>
+          <span class="sb-lnk">星星姐的空间</span>
+          <span class="sb-lnk">[ 申请友链 ]</span>
+        </div>
+      </div>
+
+      <div class="sb-box">
+        <div class="sb-hd">✿ 日记归档</div>
+        <div class="sb-body">
+          <span class="sb-lnk">2009年3月 (1)</span>
+          <span class="sb-lnk">2009年2月 (4)</span>
+          <span class="sb-lnk">2009年1月 (3)</span>
+          <span class="sb-lnk">2008年12月 (6)</span>
+          <span class="sb-lnk">2008年11月 (5)</span>
+        </div>
+      </div>
+
+      <div class="sb-box">
+        <div class="sb-hd">✿ 公告</div>
+        <div class="sb-body" style="font-size:10px;color:#661133;line-height:1.9;">
+          本站于 2008年9月开张。<br>
+          欢迎转载，请注明出处。<br>
+          站长 QQ: 12345678<br>
+          <span style="color:#FF3366">[今日特别版]</span>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+
+  </div><!-- /body-wrap -->
+
+  <!-- FOOTER -->
+  <div id="ft">
+    Copyright (c) 2009 Lulu's Little Planet &nbsp;|&nbsp; All Rights Reserved<br>
+    Best viewed in Internet Explorer 6.0 &nbsp;at&nbsp; 1024 x 768 resolution<br>
+    ✿ &nbsp; Powered by love and Dreamweaver 8 &nbsp; ✿
+  </div>
+
+</div><!-- /page -->
+
+<!-- ===== OVERLAY ===== -->
+<div id="overlay"></div>
+
+<!-- ===== DIALOG 1: CANDLE / WISH ===== -->
+<div class="xp-win" id="dlg-candle">
+  <div class="xp-bar">
+    <div class="xp-bar-title"><span class="xp-bar-icon">Q</span><span>QQ消息 — 来自 Cher</span></div>
+    <div class="xp-btns">
+      <span class="xp-ctrl dis">_</span>
+      <span class="xp-ctrl dis">&#9633;</span>
+      <span class="xp-ctrl dis">&#x2715;</span>
+    </div>
+  </div>
+  <div class="xp-body" id="candle-xpbody">
+    <div class="qq-from">
+      发送人：<strong>Cher</strong> &nbsp;&nbsp; 2009-03-02 &nbsp; 14:30:01
+      <span class="hot">[NEW!]</span>
+    </div>
+    <div class="xp-msg">
+      <p style="color:#990055;font-weight:bold">嘘——</p>
+      <p>先闭上眼睛，许一个愿望。</p>
+      <p>数到三，我们一起吹蜡烛。</p>
+      <br>
+      <div class="candle-area" id="c-art">
+        <span class="c-smoke">&nbsp;&nbsp;~&nbsp;&nbsp;~&nbsp;~&nbsp;&nbsp;~&nbsp;~&nbsp;&nbsp;~</span>
+        <span class="c-flame">&nbsp;( ' ) ( ' ) ( ' )&nbsp;</span>
+        <span class="c-wick" >&nbsp;&nbsp;| | &nbsp; | | &nbsp; | |&nbsp;&nbsp;</span>
+        <span class="c-wax"  >&nbsp;|||||&nbsp;|||||&nbsp;|||||&nbsp;</span>
+        <span class="c-wax"  >&nbsp;|||||&nbsp;|||||&nbsp;|||||&nbsp;</span>
+        <span class="c-wax"  >&nbsp;|||||&nbsp;|||||&nbsp;|||||&nbsp;</span>
+        <span class="c-plate">&nbsp;\___________________/&nbsp;</span>
+        <span class="c-msg">* 愿望许好了吗？(^_^) *</span>
+      </div>
+    </div>
+    <div class="xp-foot">
+      <button class="xp-btn" id="blow-btn" onclick="blowCandles()">吹蜡烛！</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DIALOG 2: LETTER ===== -->
+<div class="xp-win" id="dlg-letter">
+  <div class="xp-bar">
+    <div class="xp-bar-title"><span class="xp-bar-icon">Q</span><span>* 给 Lulu 的一封信 * — 来自 Cher</span></div>
+    <div class="xp-btns">
+      <span class="xp-ctrl dis">_</span>
+      <span class="xp-ctrl dis">&#9633;</span>
+      <span class="xp-ctrl dis">&#x2715;</span>
+    </div>
+  </div>
+  <div class="xp-body">
+    <div class="qq-from">
+      发送人：<strong>Cher</strong> &nbsp;&nbsp; 2009-03-02 &nbsp; 14:30:08
+      <span class="hot">[BEST]</span>
+    </div>
+    <div class="xp-msg" style="padding:0;background:transparent;border:none;">
+      <div class="cake-ascii">
+<pre style="font-family:'Courier New',monospace;font-size:11px;color:#CC0055;line-height:1.4;display:inline-block;text-align:left">
+  *  *  *  *  *  *  *  *  *
+  | i |  | i |  | i |  | i |
+  |   H  A  P  P  Y   B  D  |
+  |_________________________|
+ /                           \
+|   +-+-+-+-+-+-+-+-+-+-+-+   |
+|   |  B I R T H D A Y !  |   |
+|   |  ~~~  Lulu  ~~~      |   |
+|   +-+-+-+-+-+-+-+-+-+-+-+   |
+ \___________________________/
+  *  *  *  *  *  *  *  *  *</pre>
+      </div>
+      <div class="letter-wrap">
+        <p class="l-dear">Lulu：</p>
+        <br>
+        <p>很愉快地通知你：你在成长。</p>
+        <p>时间正在行进，阅历在增长。</p>
+        <p>未来逐渐光明，迷茫在减少，</p>
+        <p>智慧在增加。</p>
+        <br>
+        <p>生日快乐，请对自己说：</p>
+        <br>
+        <p style="color:#990055;font-style:italic;padding-left:8px;border-left:2px solid #FFC2D6">
+          "不要畏惧成长，<br>
+          &nbsp;请你一直做自己吧。"
+        </p>
+        <br>
+        <p class="l-sign">—— Cher</p>
+      </div>
+    </div>
+    <div class="xp-foot">
+      <button class="xp-btn xp-btn-primary" onclick="closeLetter()">达成成就：又一岁</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CORNER DECO ===== -->
+<span class="corner-deco" style="top:18px;left:14px;">*</span>
+<span class="corner-deco" style="top:22px;right:14px;animation-delay:1.5s;">*</span>
+<span class="corner-deco" style="bottom:36px;left:14px;animation-delay:1s;">~</span>
+<span class="corner-deco" style="bottom:40px;right:14px;animation-delay:2.5s;">~</span>
+
+
+
+<!-- ===== BACKGROUND TWINKLE STARS ===== -->
+<script>
+(function(){
+  // 大量闪烁星星/爱心/钻石
+  var icons = ['✦','✧','⋆','♡','♥','❥','✿','❀','✾','❁','◆','◇','*','·','˚','。'];
+  var colors = ['#FF7DAD','#FF4488','#FF9BB8','#FF5588','#FFBBD0','#FF5577','#FFA8C5','#EE2266','#FFD4E2','#FF8DA8','#FFBBCC','#DD3355'];
+  for(var i=0;i<36;i++){
+    var s = document.createElement('span');
+    s.className = 'star-twinkle';
+    s.innerHTML = icons[i % icons.length];
+    s.style.cssText = [
+      'left:'+(Math.random()*94+3)+'vw',
+      'top:'+(Math.random()*92+4)+'vh',
+      'font-size:'+(8+Math.random()*10)+'px',
+      'color:'+colors[i % colors.length],
+      'animation-delay:'+(Math.random()*4)+'s',
+      'animation-duration:'+(1.2+Math.random()*2.5)+'s',
+      'text-shadow: 0 0 '+(2+Math.random()*4)+'px ' + colors[i % colors.length]
+    ].join(';');
+    document.body.appendChild(s);
+  }
+
+  // 额外洒一些大颗闪烁在主内容区域附近
+  for(var j=0;j<8;j++){
+    var b = document.createElement('span');
+    b.className = 'star-twinkle';
+    b.innerHTML = ['✿','♡','❀','✦','♥','✾','♡','❁'][j];
+    b.style.cssText = [
+      'left:'+(50+Math.random()*30)+'%',
+      'top:'+(15+Math.random()*70)+'%',
+      'font-size:'+(12+Math.random()*8)+'px',
+      'color:'+colors[j],
+      'animation-delay:'+(Math.random()*3)+'s',
+      'animation-duration:'+(1.5+Math.random()*2)+'s',
+      'text-shadow: 0 0 6px ' + colors[j]
+    ].join(';');
+    b.style.position = 'absolute';
+    b.style.pointerEvents = 'none';
+    b.style.zIndex = '0';
+    document.getElementById('page').appendChild(b);
+  }
+})();
+</script>
+
+<!-- ===== JS: CANDLE + LETTER FLOW ===== -->
+<script>
+(function(){
+  var phase = 0;
+  var timer = setTimeout(function(){ if(phase===0) showCandle(); }, 4000);
+
+  function el(id){ return document.getElementById(id); }
+
+  window.triggerCandle = function(){
+    clearTimeout(timer);
+    showCandle();
+  };
+
+  function showCandle(){
+    if(phase >= 1) {
+      el('overlay').style.display = 'block';
+      el('dlg-letter').style.display = 'block';
+      return;
+    }
+    phase = 1;
+    el('overlay').style.display = 'block';
+    el('dlg-candle').style.display = 'block';
+  }
+
+  window.blowCandles = function(){
+    el('c-art').classList.add('blown');
+    el('candle-xpbody').classList.add('flash');
+    var btn = el('blow-btn');
+    btn.disabled = true;
+    btn.textContent = '... 烟正在飘散 ...';
+    setTimeout(function(){
+      el('dlg-candle').style.display = 'none';
+      showLetter();
+    }, 2000);
+  };
+
+  function showLetter(){
+    phase = 2;
+    el('dlg-letter').style.display = 'block';
+  }
+
+  window.closeLetter = function(){
+    el('dlg-letter').style.display = 'none';
+    el('overlay').style.display = 'none';
+    if(phase < 3) celebrate();
+    phase = 3;
+  };
+
+  function celebrate(){
+    el('bday-tag').classList.add('on');
+    var c = el('counter');
+    var n = parseInt(c.textContent) + 1;
+    c.textContent = String(n).padStart(6,'0');
+    c.classList.add('jump');
+    setTimeout(function(){ c.classList.remove('jump'); }, 500);
+
+    var syms   = ['*','~','x','o'];
+    var colors = ['#FF6699','#FF4488','#FF88AA','#FF3377','#FFAACC','#FF5577'];
+    for(var i=0;i<55;i++){
+      (function(j){
+        setTimeout(function(){
+          var p = document.createElement('span');
+          p.className = 'petal';
+          p.textContent = syms[Math.floor(Math.random()*syms.length)];
+          p.style.left  = (Math.random()*100)+'vw';
+          p.style.color = colors[Math.floor(Math.random()*colors.length)];
+          p.style.fontSize = (12+Math.random()*16)+'px';
+          var d = 3+Math.random()*4;
+          p.style.animationDuration = d+'s';
+          document.body.appendChild(p);
+          setTimeout(function(){ p.remove(); }, d*1000+300);
+        }, j*60);
+      })(i);
+    }
+  }
+})();
+</script>
+</body>
+</html>
