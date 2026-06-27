@@ -203,7 +203,7 @@ img { border: 0; }
 #main {
   flex: 1;
   min-width: 0;
-  padding: 12px 14px;
+  padding: 8px 12px;
   border-right: 2px dotted #FFC2D6;
 }
 
@@ -438,9 +438,9 @@ img { border: 0; }
 #overlay.on { display: block; }
 .xp-win {
   display: none;
-  position: fixed;
+  position: absolute;
   z-index: 600;
-  top: 50%; left: 50%;
+  top: 50vh; left: 50%;
   transform: translate(-50%,-50%);
   width: min(420px, 92vw);
   box-shadow: 4px 4px 14px rgba(150,40,60,0.4), 0 0 0 3px rgba(255,180,200,0.25);
@@ -455,10 +455,10 @@ img { border: 0; }
 /* XP title bar — pink theme */
 .xp-bar {
   background: linear-gradient(180deg, #FF9BB8 0%, #FF77A0 30%, #EE5588 70%, #DD4477 100%);
-  padding: 6px 10px 6px 12px;
+  padding: 4px 8px 4px 10px;
   display: flex; align-items: center; justify-content: space-between;
   border-bottom: 2px solid #CC5577;
-  height: 30px;
+  height: 28px;
 }
 .xp-bar-title {
   color: #fff; font-size: 12px; font-weight: bold;
@@ -494,11 +494,11 @@ img { border: 0; }
 
 /* XP body */
 .xp-body {
-  background: #FFF8FA; padding: 12px 14px;
+  background: #FFF8FA; padding: 8px 12px;
 }
 .qq-from {
   background: #fff; border: 1px solid #FFD4E2; border-radius: 5px;
-  padding: 5px 10px; margin-bottom: 10px;
+  padding: 4px 8px; margin-bottom: 6px;
   font-size: 11px; color: #330011; font-family: "Tahoma",sans-serif;
 }
 .qq-from strong { color: #DD4477; }
@@ -506,17 +506,17 @@ img { border: 0; }
 .xp-msg {
   background: #fff; border: 1px solid #FFD4E2;
   border-radius: 6px;
-  padding: 12px 14px; margin-bottom: 12px;
+  padding: 8px 12px; margin-bottom: 12px;
   font-size: 13px; color: #330011; line-height: 1.9;
-  min-height: 70px; font-family: "Tahoma","Microsoft YaHei",sans-serif;
+  min-height: 40px; font-family: "Tahoma","Microsoft YaHei",sans-serif;
 }
-.xp-foot { text-align: center; padding: 2px 0 0; display: flex; gap: 8px; justify-content: center; }
+.xp-foot { text-align: center; padding: 0; display: flex; gap: 8px; justify-content: center; }
 .xp-btn {
   background: linear-gradient(180deg, #FFBBD0 0%, #FF8DA8 100%);
   border: 2px solid #DD5577; border-radius: 5px;
   font-family: "Tahoma","Microsoft YaHei",sans-serif;
   font-size: 12px; color: #fff; font-weight: bold;
-  padding: 6px 20px; cursor: pointer; min-width: 80px;
+  padding: 5px 16px; cursor: pointer; min-width: 80px;
   text-shadow: 1px 1px 1px rgba(150,30,50,0.4);
   transition: all 0.15s;
 }
@@ -528,7 +528,7 @@ img { border: 0; }
    CANDLE ASCII
    ========================================= */
 .candle-area {
-  font-family:"Courier New",monospace; font-size:12px; color:#333;
+  font-family:"Courier New",monospace; font-size:11px; margin-top:4px; color:#333;
   text-align:center; line-height:1.45; margin:4px 0 6px;
   background:#FFFBF0; border:1px solid #FFDDA0; padding:8px 0;
 }
@@ -547,28 +547,30 @@ img { border: 0; }
 /* =========================================
    LETTER DIALOG
    ========================================= */
-#dlg-letter { width: min(480px, 96vw); }
+#dlg-letter { width: min(520px, 94vw); }
 .letter-wrap {
   background: #FFF8F0; border: 1px solid #D4AAAA;
   background-image: repeating-linear-gradient(transparent, transparent 23px, #EED8D8 23px, #EED8D8 24px);
-  position: relative; padding: 12px 14px 10px 48px;
+  position: relative; padding: 8px 12px 8px 36px;
   font-family: "SimSun","宋体","Times New Roman",serif;
-  font-size: 13px; color: #2A0A0A; line-height: 1.9;
+  font-size: 12px; color: #2A0A0A; line-height: 1.8;
   flex: 1; min-width: 0;
 }
+.letter-wrap p { margin-bottom: 6px; }
+
 .letter-wrap::before {
-  content:''; position:absolute; left:40px; top:0; bottom:0; width:1px; background:#FFB3B3;
+  content:''; position:absolute; left:32px; top:0; bottom:0; width:1px; background:#FFB3B3;
 }
 .letter-img {
   float: right;
-  width: 140px;
+  width: 150px;
   margin: 0 0 8px 12px;
   border: 3px solid #fff;
   box-shadow: 2px 2px 6px rgba(150,40,60,0.15);
   border-radius: 3px;
 }
-.l-dear { font-weight:bold; color:#DD4477; font-size:14px; }
-.l-sign { text-align:right; font-style:italic; color:#BB4466; margin-top:8px; font-size:12px; }
+.l-dear { font-weight:bold; color:#DD4477; font-size:11px; margin-top:4px; }
+.l-sign { text-align:right; font-style:italic; color:#BB4466; margin-top:8px; font-size:11px; margin-top:4px; }
 
 /* letter body: text + photo side by side */
 .letter-body-wrap {
@@ -598,10 +600,10 @@ img { border: 0; }
 .cake-ascii {
   font-family:"Courier New",monospace; font-size:11px; text-align:center;
   background:#fff; border:1px dashed #FFC2D6; color:#CC0055;
-  padding:6px 4px; margin-bottom:8px; line-height:1.5;
+  padding:4px 4px; margin-bottom:6px; line-height:1.5;
 }
 .cake-wrap {
-  position: relative; display: inline-block; padding: 10px 16px;
+  position: relative; display: inline-block; padding: 6px 10px;
 }
 .cake-word {
   position: absolute;
@@ -929,24 +931,18 @@ img { border: 0; }
       <div class="letter-wrap">
         <img class="letter-img" src="lulu-cake.jpg" alt="蛋糕">
         <p class="l-dear">Lulu：</p>
-        <br>
         <p>很愉快地通知你：你在成长。</p>
         <p>时间正在行进，阅历在增长。</p>
         <p>未来逐渐光明，迷茫在减少，</p>
         <p>智慧在增加。</p>
-        <br>
         <p>我希望你收到的，永远是比悲伤更多的好消息。</p>
-        <br>
         <p>比起习惯难过的日子，<br>幸福能成为生活中最平常不过的事。</p>
-        <br>
         <p>生日快乐。<br>希望这一年，能有更多让你期待明天的理由。</p>
         <p>请对自己说：</p>
-        <br>
         <p style="color:#990055;font-style:italic;padding-left:8px;border-left:2px solid #FFB3CC">
           "不要畏惧成长，<br>
           &nbsp;请你一直做自己吧。"
         </p>
-        <br>
         <p class="l-sign">—— Cher</p>
       </div>
     </div>
